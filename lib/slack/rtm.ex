@@ -5,7 +5,8 @@ defmodule Slack.Rtm do
   require Logger
 
   def start(token) do
-    case HTTPoison.get(@url <> token) do
+    options = [timeout: 25000, recv_timeout: 25000]
+    case HTTPoison.get(@url <> token, [], options) do
       {:ok, response} ->
         case JSX.decode(response.body, [{:labels, :atom}]) do
           {:ok, json} ->
